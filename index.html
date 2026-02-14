@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor tarjeta presentación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Editor de Tarjeta de Héroe</h1>
+
+    <div class="main-container">
+        <aside class="controls">
+            <section class="grupo">
+                <h3>Información Básica</h3>
+                <input type="text" id="in-btag" placeholder="BattleTag">
+                <input type="text" id="in-prons" placeholder="Pronombres">
+                <input type="text" id="in-ano" placeholder="Año Comienzo">
+            </section>
+
+            <section class="grupo">
+                <h3>Horas en Modos</h3>
+                <div id="lista-modos"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>+ Horas con Héroes (Top 6)</h3>
+                <div id="cont-topMas"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>- Horas con Héroes (Top 6)</h3>
+                <div id="cont-topMenos"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>Nivel de Maestría (Top 3)</h3>
+                <div id="cont-maestria"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>Rango Heroico (Top 3)</h3>
+                <div id="cont-rango"></div>
+            </section>
+        </aside>
+
+        <main class="canvas-area">
+            <canvas id="canvas"></canvas>
+            <div class="canvas-footer">
+                <button id="btn-descargar" class="btn-primary">Descargar Tarjeta</button>
+                <p class="tip">La tarjeta se descargará en formato PNG de alta resolución. Asegúrate de haber rellenado todos los campos antes de generar la imagen final.</p>
+            </div>
+        </main>
+    </div>
+
+      <div id="mini-menu" class="floating-menu" style="display: none;">
+    <div class="menu-option" data-nivel="main" style="color: #ff00ff;">Main</div>
+    <div class="menu-option" data-nivel="secundario" style="color: #00ffff;">Main Secundario</div>
+    <div class="menu-option" data-nivel="puedo" style="color: #00ff00;">Puedo Jugar</div>
+    <div class="menu-option" data-nivel="necesidad" style="color: #ffff00;">Necesidad</div>
+    <div class="menu-option" data-nivel="practicando" style="color: #ff8c00;">Practicando</div>
+    <div class="menu-option" data-nivel="nunca" style="color: #ff0000;">Nunca</div>
+    <div class="menu-option" data-nivel="none" style="color: #888;">Quitar Marca</div>
+
+    <script src="script.js"></script>
+</div>
+</body>
+</html>
