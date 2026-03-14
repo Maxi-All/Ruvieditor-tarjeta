@@ -612,25 +612,32 @@ function init() {
 }
 
 function renderSeccion(idCont, arr, tipo) {
-  const cont = document.getElementById(idCont);
-  if (!cont) return;
-  cont.innerHTML = arr
-    .map(
-      (item, i) => `
+    const cont = document.getElementById(idCont);
+    if (!cont) return;
+    cont.innerHTML = arr.map((item, i) => `
         <div class="custom-select-container">
             <div style="display: grid; grid-template-columns: 1fr 80px; gap: 5px; margin-bottom: 8px;">
                 <div class="select-box" onclick="toggleDrop('${tipo}-${i}')">
-                    <img src="${getIcon(item.nombre)}" class="icon-ui" onerror="this.src='https://via.placeholder.com/35'">
+                    <img src="${getIcon(item.nombre)}" class="icon-ui" onerror="this.src='placeHolder.png'">
                     <span>${item.nombre}</span>
                 </div>
-                <input type="text" value="${item.valor}" oninput="updateVal('${tipo}', ${i}, this.value)" style="text-align:center;">
+                <input type="text" value="${item.valor}" oninput="updateVal('${tipo}', ${i}, this.value)" class="input-valor">
+                
                 <div id="drop-${tipo}-${i}" class="select-items">
-                    ${HEROES.map((h) => `<div class="opcion-heroe" onclick="selectHero('${tipo}', ${i}, '${h}')"><img src="${getIcon(h)}" class="icon-ui"><span>${h}</span></div>`).join("")}
+                    <input type="text" placeholder="Buscar héroe..." class="search-bar" 
+                           onkeyup="filtrarHeroes('${tipo}-${i}', this.value)"
+                           onclick="event.stopPropagation()">
+                    
+                    <div class="heroes-list">
+                        ${HEROES.map(h => `
+                            <div class="opcion-heroe" onclick="selectHero('${tipo}', ${i}, '${h}')">
+                                <img src="${getIcon(h)}" class="icon-ui">
+                                <span>${h}</span>
+                            </div>`).join('')}
+                    </div>
                 </div>
             </div>
-        </div>`,
-    )
-    .join("");
+        </div>`).join('');
 }
 
 function renderModos() {
@@ -694,5 +701,20 @@ document.getElementById("btn-descargar").onclick = function () {
     this.disabled = false;
   }, 800);
 };
+
+function filtrarHeroes(id, texto) {
+    const lista = document.querySelector(`#drop-${id} .heroes-list`);
+    const opciones = lista.querySelectorAll('.opcion-heroe');
+    const filtro = texto.toLowerCase();
+
+    opciones.forEach(opcion => {
+        const nombreHeroe = opcion.querySelector('span').innerText.toLowerCase();
+        if (nombreHeroe.includes(filtro)) {
+            opcion.style.display = "flex";
+        } else {
+            opcion.style.display = "none";
+        }
+    });
+}
 
 init();
