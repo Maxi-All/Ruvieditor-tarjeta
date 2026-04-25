@@ -59,6 +59,7 @@ const COLORES_HEROES = {
   Reaper: "#232325",
   Reinhardt: "#9195AB",
   Roadhog: "#D68412",
+  Sierra: "#CF4567",
   Sigma: "#4FD0E6",
   Sojourn: "#BEB095",
   "Soldado 76": "#64696D",
@@ -77,8 +78,9 @@ const COLORES_HEROES = {
 };
 
 const HEROES = Object.keys(COLORES_HEROES);
-const MODOS = ["RÁPIDAS", "COMPETITIVAS", "ARCADE", "ESTADIO", "CUSTOM"];
+const MODOS = ["TOTAL", "RÁPIDAS", "COMPETITIVAS", "ARCADE", "ESTADIO", "CUSTOM"];
 const COLORES_MODOS = {
+  TOTAL: "#FFFFFF",
   RÁPIDAS: "#0078FD",
   COMPETITIVAS: "#E50225",
   ARCADE: "#5BCB0D",
@@ -87,9 +89,8 @@ const COLORES_MODOS = {
 };
 
 const NIVELES_COLORES = {
-  main: "#ff00ff",
-  secundario: "#00ffff",
-  puedo: "#00ff00",
+  main: "#00D1FF",
+  puedojugar: "#00ff00",
   necesidad: "#ffff00",
   practicando: "#ff8c00",
   nunca: "#ff0000",
@@ -104,6 +105,7 @@ const COLORES_STATS = {
   movimiento: "#543398",
 };
 
+//TODO reajustar coords
 const GRID_HEROES = [
   { nombre: "D.Va", x: 1357, y: 400 },
   { nombre: "Domina", x: 1435, y: 400 },
@@ -165,20 +167,6 @@ const GRID_HEROES = [
 ];
 
 const HITBOXES = {
-  roles: [
-    { id: "tanque", x: 316, y: 390, w: 25, h: 30 },
-    { id: "dps", x: 370, y: 390, w: 27, h: 30 },
-    { id: "apoyo", x: 425, y: 390, w: 30, h: 30 },
-  ],
-  plataformas: [
-    { id: "pc", x: 295, y: 435, w: 40, h: 25 },
-    { id: "consola", x: 365, y: 435, w: 35, h: 25 },
-  ],
-  regiones: [
-    { id: "EUROPA", x: 190, y: 480, w: 110, h: 20 },
-    { id: "LATAM", x: 340, y: 480, w: 95, h: 20 },
-    { id: "OTRO", x: 475, y: 480, w: 75, h: 20 },
-  ],
   semana: [
     { id: "L", x: 325, y: 525, w: 20, h: 20 },
     { id: "M", x: 353, y: 525, w: 20, h: 20 },
@@ -187,9 +175,11 @@ const HITBOXES = {
     { id: "V", x: 445, y: 525, w: 20, h: 20 },
     { id: "S", x: 473, y: 525, w: 20, h: 20 },
     { id: "D", x: 501, y: 525, w: 20, h: 20 },
-  ],
+  ]
+  
 };
 
+//TODO reajustar coords
 const HITBOXES_STATS = {
   posicionamiento: generarFilaStats(175, 762, 18.5),
   gameSense: generarFilaStats(175, 788, 18.5),
@@ -199,6 +189,7 @@ const HITBOXES_STATS = {
   movimiento: generarFilaStats(175, 895, 18.5),
 };
 
+//TODO reajustar coords
 const HITBOXES_EXT = {
   honor: [
     { id: 1, x: 100, y: 658, r: 22 },
@@ -266,22 +257,23 @@ let estado = {
   btag: "USUARIO#1234",
   prons: "They/Them",
   ano: "2016",
-  topMas: Array(6)
+  topMas: Array(10)
     .fill()
     .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  topMenos: Array(6)
+  topMenos: Array(5)
     .fill()
     .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  maestria: Array(3)
+  maestria: Array(5)
     .fill()
     .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  rango: Array(3)
+  rango: Array(3) 
     .fill()
     .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  horasModos: Array(5).fill("0"),
+  // TODO añadir el de openQ
+  horasModos: Array(6).fill("0"),
   rol: [],
   plataforma: [],
-  region: "EUROPA",
+  region: [],
   dias: [],
   honor: 1,
   competitivo: {
@@ -304,10 +296,14 @@ let estado = {
     mapping: 0,
     movimiento: 0,
   },
+  // TODO horas en roles
+  // TODO tus preferencias
+  // TODO division y peak de rankeds y estadio
 };
 
 let heroeSeleccionadoActual = null;
 
+// TODO updatear coords
 const COORDS = {
   btag: { x: 246, y: 286 },
   prons: { x: 270, y: 326 },
@@ -372,6 +368,7 @@ function dibujarTrapezoide(x, y, w, h, color, lleno) {
   }
 }
 
+// this maybe no longer needed
 function dibujarHexagono(x, y, color) {
   ctx.strokeStyle = color;
   ctx.lineWidth = 5;
@@ -582,7 +579,7 @@ document.getElementById("mini-menu").addEventListener("click", (e) => {
 });
 
 const plantilla = new Image();
-plantilla.src = "Plantilla.jpg";
+plantilla.src = "Plantilla.png";
 plantilla.onload = () => {
   canvas.width = plantilla.naturalWidth;
   canvas.height = plantilla.naturalHeight;
