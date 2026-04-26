@@ -546,6 +546,7 @@ function actualizar() {
 
       const coordsTxt = COORDS[coordKey] ? COORDS[coordKey][rol] : null;
       if (coordsTxt) {
+        
         ctx.fillStyle = "white";
         ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY);
         ctx.fillText(datos.peak || "", coordsTxt.peakX, coordsTxt.peakY);
