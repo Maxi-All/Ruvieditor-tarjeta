@@ -286,11 +286,11 @@ const HITBOXES_EXT = {
 let estado = {
   btag: "USUARIO#1234",
   genero: "",
-  prons: "They/Them",
-  edad: "18",
-  anyo: "2016",
-  plataforma: "PC",
-  país: "la Tierra",
+  prons: "",
+  edad: "",
+  anyo: "",
+  plataforma: "",
+  país: "",
   topMas: Array(10).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
   topMenos: Array(5).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
   maestria: Array(5).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
@@ -299,28 +299,28 @@ let estado = {
   horasModos: Array(6).fill("0"),
   dias: [],
 
-  heroeFav: "Lifeweaver",
-  heroeOdiado: "Zarya",
-  mapaFav: "King's Row",
-  mapaOdiado: "Aatlis",
-  skinFav: "Lego (Bastion)",
-  modoFav: "Híbrido",
+  heroeFav: "",
+  heroeOdiado: "",
+  mapaFav: "",
+  mapaOdiado: "",
+  skinFav: "",
+  modoFav: "",
 
   honor: 1,
   competitivo: {
-    tanque: { rango: null, x: false, division: "5", peak: "" },
-    dps: { rango: null, x: false, division: "5", peak: "" },
-    apoyo: { rango: null, x: false, division: "5", peak: "" },
-    filaAbierta: { rango: null, x: false, division: "5", peak: "" },
+    tanque: { rango: null, x: false, division: "", peak: "" },
+    dps: { rango: null, x: false, division: "", peak: "" },
+    apoyo: { rango: null, x: false, division: "", peak: "" },
+    filaAbierta: { rango: null, x: false, division: "", peak: "" },
   },
   estadio: {
-    tanque: { rango: null, x: false, division: "5", peak: "" },
-    dps: { rango: null, x: false, division: "5", peak: "" },
-    apoyo: { rango: null, x: false, division: "5", peak: "" },
+    tanque: { rango: null, x: false, division: "", peak: "" },
+    dps: { rango: null, x: false, division: "", peak: "" },
+    apoyo: { rango: null, x: false, division: "", peak: "" },
   },
   habilidades: {},
   stats: { posicionamiento: 0, gameSense: 0, comunicacion: 0, mecanicas: 0, mapping: 0, movimiento: 0 },
-  horasRoles: Array(3).fill("0"),
+  horasRoles: Array(3).fill(""),
 };
 
 let heroeSeleccionadoActual = null;
@@ -546,6 +546,7 @@ function actualizar() {
 
       const coordsTxt = COORDS[coordKey] ? COORDS[coordKey][rol] : null;
       if (coordsTxt) {
+        ctx.fillStyle = "white";
         ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY);
         ctx.fillText(datos.peak || "", coordsTxt.peakX, coordsTxt.peakY);
       }
