@@ -21,8 +21,8 @@
                 <input type="text" id="in-prons" placeholder="Pronombres">
                 <input type="text" id="in-edad" placeholder="Edad">
                 <input type="text" id="in-anyo" placeholder="Año Comienzo">
-                <input type="text" id="in-plataforma" placeholder="plataforma">
-                <input type="text" id="in-pais" placeholder="pais">
+                <input type="text" id="in-plataforma" placeholder="Plataforma">
+                <input type="text" id="in-pais" placeholder="Pais">
             </section>
 
             <section class="grupo">
@@ -48,50 +48,16 @@
                 <div id="lista-modos"></div>
             </section>
 
-            <section class=grupo>
+            <section class="grupo">
                 <h3>Competitivo (División y Peak)</h3>
-                <div
-                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; text-align: center; font-size: 0.8rem;">
-                    <span>Rol</span><span>División (1-5)</span><span>Peak</span>
-
-                    <span>Tanque</span>
-                    <input type="text" id="in-div-tanque" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-tanque" value="" class="input-valor">
-
-                    <span>DPS</span>
-                    <input type="text" id="in-div-dps" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-dps" value="" class="input-valor">
-
-                    <span>Apoyo</span>
-                    <input type="text" id="in-div-apoyo" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-apoyo" value="" class="input-valor">
-
-                    <span>Fila Abierta</span>
-                    <input type="text" id="in-div-filaAbierta" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-filaAbierta" value="" class="input-valor">
-                </div>
+                <div id="grid-competitivo"></div>
             </section>
 
             <section class="grupo">
                 <h3> Estadio (División y Peak)</h3>
-                <div
-                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; text-align: center; font-size: 0.8rem;">
-                    <span>Rol</span><span>División (1-5)</span><span>Peak</span>
-
-                    <span>Tanque</span>
-                    <input type="text" id="in-div-tanque-Estadio" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-tanque-Estadio" value="" class="input-valor">
-
-                    <span>DPS</span>
-                    <input type="text" id="in-div-dps-Estadio" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-dps-Estadio" value="" class="input-valor">
-
-                    <span>Apoyo</span>
-                    <input type="text" id="in-div-apoyo-Estadio" placeholder="5" class="input-valor">
-                    <input type="text" id="in-peak-apoyo-Estadio" value="" class="input-valor">
-                </div>
+                <div id="grid-estadio"></div>
             </section>
-
+            
             <section class="grupo">
                 <h3>Horas en roles</h3>
                 <label>Horas en roles</label>
@@ -129,31 +95,38 @@
         </aside>
         <main class="canvas-area">
             <canvas id="canvas"></canvas>
-        </main>
-
-        <aside class="panel-derecho">
-            <section class="grupo">
+            <div style="display:flex; gap:10px; margin-top:15px; width:100%; max-width:900px; justify-content:center;">
+                <button id="btn-guia" onclick="document.getElementById('modal-guia').style.display='flex'"
+                    style="padding:12px 24px; background:#2f3136; color:white; border:1px solid #444; border-radius:6px; font-size:1rem; font-weight:bold; cursor:pointer; text-transform:uppercase; letter-spacing:1px;">
+                    ❓ Guía de uso
+                </button>
                 <button id="btn-descargar" class="btn-primary"
-                    style="width: 100%; margin-bottom: 20px; padding: 15px; font-size: 1.1rem;">
+                    style="padding:15px 40px; font-size:1.1rem; flex:1; max-width:400px;">
                     DESCARGAR TARJETA
                 </button>
+            </div>
+        </main>
 
-                <div class="guia-contenedor">
-                    <h3 style="color: #FE0000; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">
-                        Guía de uso</h3>
-                    <ul class="tip-list-derecha">
-                        <li><strong>Días de Juego:</strong> Pulsa sobre las letras de la semana (L, M, X...) en la imagen para subrayarlas.</li>
-                        <li><strong>Tus preferencias</strong> Aqui pon tus preferencias. Escuchamos y no juzgamos.</li>
-                        <li><strong>Tus estadistícas:</strong> Haz clic directamente en las barras de <em>Mecánicas</em>, <em>Game Sense</em>... y en los círculos de <em>Honor</em> para subirlos.</li>
-                        <li><strong>Sin Rango:</strong> Pulsa los iconos de rol (Tanque, DPS...) en Competitivo o Estadio para marcar la <strong>X</strong>.</li>
-                        <li><strong>Rango Automático:</strong> En "SR Heróico", solo escribe tus puntos.</li>
-                        <li><strong>Nivel de habilidad:</strong> Clica en las caras de los héroes para marcar tu nivel (Main, Practicando...). Se puede quitar la marca o cambiarla por si te equivocaste </li>
-                        <li><strong>Buscador:</strong> En los Tops de Héroes, usa la barra de búsqueda del desplegable para encontrarlos más rápido.</li>
-                        <li><strong>Descarga:</strong> Recomendado usar PC o móvil en horizontal. Se generará un PNG en alta calidad.</li>
-                    </ul>
-                </div>
-            </section>
-        </aside>
+        <div style="display:none;" id="panel-derecho-placeholder"></div>
+
+        <!-- Modal Guía -->
+        <div id="modal-guia" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:2000; align-items:center; justify-content:center;">
+            <div style="background:#1e2124; border:1px solid #FE0000; border-radius:12px; padding:30px; max-width:520px; width:90%; position:relative; max-height:85vh; overflow-y:auto;">
+                <h3 style="color:#FE0000; text-transform:uppercase; margin-bottom:20px; font-size:1.1rem; letter-spacing:1px;">Guía de uso</h3>
+                <button onclick="document.getElementById('modal-guia').style.display='none'"
+                    style="position:absolute; top:15px; right:15px; background:none; border:none; color:white; font-size:1.4rem; cursor:pointer; line-height:1;">✕</button>
+                <ul class="tip-list-derecha">
+                    <li><strong>Días de Juego:</strong> Pulsa sobre las letras de la semana (L, M, X...) en la imagen para subrayarlas.</li>
+                    <li><strong>Tus preferencias:</strong> Aquí pon tus preferencias. Escuchamos y no juzgamos.</li>
+                    <li><strong>Tus estadísticas:</strong> Haz clic directamente en las barras de <em>Mecánicas</em>, <em>Game Sense</em>... y en los círculos de <em>Honor</em> para subirlos.</li>
+                    <li><strong>Sin Rango:</strong> Pulsa los iconos de rol (Tanque, DPS...) en Competitivo o Estadio para marcar la <strong>X</strong>.</li>
+                    <li><strong>Rango Automático:</strong> En "SR Heróico", solo escribe tus puntos.</li>
+                    <li><strong>Nivel de habilidad:</strong> Clica en las caras de los héroes para marcar tu nivel (Main, Practicando...). Se puede quitar la marca o cambiarla por si te equivocaste.</li>
+                    <li><strong>Buscador:</strong> En los Tops de Héroes, usa la barra de búsqueda del desplegable para encontrarlos más rápido.</li>
+                    <li><strong>Descarga:</strong> Recomendado usar PC o móvil en horizontal. Se generará un PNG en alta calidad.</li>
+                </ul>
+            </div>
+        </div>
 
     </div>
     <div id="mini-menu" class="floating-menu" style="display: none;">

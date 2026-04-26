@@ -18,7 +18,7 @@ body {
     color: white;
     font-family: 'Barlow', sans-serif;
     padding: 10px;
-    overflow: hidden;
+    overflow-y: auto;
 }
 h1 {
     font-family: 'Faster Stroker', sans-serif;
@@ -77,6 +77,11 @@ input[type="number"] {
     font-size: 1.3rem;
     border-radius: 6px;
     margin-bottom: 10px;
+    font-family: 'Barlow', sans-serif;
+}
+
+input, button, select, span, label, div {
+    font-family: 'Barlow', sans-serif;
 }
 
 .custom-select-container {
@@ -242,8 +247,7 @@ canvas {
 }
 
 .panel-derecho {
-    flex: 0 0 220px;
-    max-width: 220px;
+    display: none;
 }
 
 .tip-list-derecha {
@@ -260,6 +264,15 @@ canvas {
     border-left: 2px solid #333;
     padding-left: 10px;
     text-align: justify;
+}
+
+[id^="drop-peak-"] {
+    display: none;
+    position: absolute;
+    background: #2f3136;
+    border: 1px solid #FE0000;
+    z-index: 100;
+    width: 160px;
 }
 
 /* --- MOVIL --- */

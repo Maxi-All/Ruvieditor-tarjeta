@@ -344,20 +344,20 @@ const COORDS = {
   modos: { x: 200, y: 1187, salto: 32 },
 
   compTextos: {
-    tanque: { divX: 1174, divY: 338, peakX: 1288, peakY: 338 },
-    dps: { divX: 1174, divY: 406, peakX: 1288, peakY: 406 },
-    apoyo: { divX: 1174, divY: 476, peakX: 1288, peakY: 476},
-    filaAbierta: { divX: 1174, divY: 543, peakX: 1288, peakY: 543 },
+    tanque: { divX: 1174, divY: 333, peakX: 1288, peakY: 333 },
+    dps: { divX: 1174, divY: 401, peakX: 1288, peakY: 401 },
+    apoyo: { divX: 1174, divY: 471, peakX: 1288, peakY: 471},
+    filaAbierta: { divX: 1174, divY: 538, peakX: 1288, peakY: 538 },
   },
   estadioTextos: {
-    tanque: { divX: 1174, divY: 689, peakX: 1288, peakY: 689},
-    dps: { divX: 1174, divY: 765, peakX: 1288, peakY: 765 },
-    apoyo: { divX: 1174, divY: 844, peakX: 1288, peakY: 844 },
+    tanque: { divX: 1174, divY: 684, peakX: 1288, peakY: 684},
+    dps: { divX: 1174, divY: 760, peakX: 1288, peakY: 760 },
+    apoyo: { divX: 1174, divY: 839, peakX: 1288, peakY: 839 },
   },
   horasRoles: { x: 656, y: 1050, salto: 295 },
 
   rangoRoleQ: { xNombre: 578, xRango: 755, xValor: 863, y: 1212, salto: 68 },
-  rangoOpenQ: { xNombre: 997, xRango: 1183, xValor: 1280, y: 1212, salto: 68 },
+  rangoOpenQ: { xNombre: 997, xRango: 1178, xValor: 1280, y: 1212, salto: 68 },
 
   topMas: { xNombre: 2180, xValor: 2378, y: 326, salto: 46 },
   topMenos: { xNombre: 2180, xValor: 2378, y: 863, salto: 46 },
@@ -454,7 +454,7 @@ function dibujarListaRangos(data, config) {
     const rangoAuto = calcularRango(item.valor);
     if (rangoAuto !== "- Rango -") {
         const src = getIcon(rangoAuto);
-        dibujarImagenPerezosa(src, config.xRango - 16, y - 43, 46, 46);
+        dibujarImagenPerezosa(src, config.xRango - 16 + 5, y - 43 + 5, 37, 37);
     }
 
     ctx.fillStyle = "white";
@@ -532,24 +532,38 @@ function actualizar() {
   const hActivo = HITBOXES_EXT.honor.find((h) => h.id === estado.honor);
   if (hActivo) dibujarCirculo(hActivo);
 
-  ["competitivo", "estadio"].forEach((seccion) => {
+ ["competitivo", "estadio"].forEach((seccion) => {
     const coordKey = seccion === "competitivo" ? "compTextos" : "estadioTextos";
     Object.keys(estado[seccion]).forEach((rol) => {
       const datos = estado[seccion][rol];
-      const hBox = HITBOXES_EXT[seccion][rol];
-      
-      if (datos.x) dibujarEquis(hBox.icono);
-      if (datos.rango) {
-        const rBox = hBox.rangos.find((r) => r.id === datos.rango);
-        if (rBox) dibujarCirculo(rBox);
-      }
-
       const coordsTxt = COORDS[coordKey] ? COORDS[coordKey][rol] : null;
+      
       if (coordsTxt) {
-        
         ctx.fillStyle = "white";
-        ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY);
-        ctx.fillText(datos.peak || "", coordsTxt.peakX, coordsTxt.peakY);
+        ctx.textAlign = "center";
+
+        // División Grande
+        ctx.font = "bold 40px Barlow";
+        ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY + 5);
+
+        // Icono de Peak
+        if (datos.peak && datos.peak !== "") {
+          const src = getIcon(datos.peak);
+          const RANGOS_GRANDES_COMP = ['Master', 'Granmaster', 'Champion', 'Top500'];
+          const RANGOS_MEDIO_EST = ['Profesional'];
+          const RANGOS_GRANDES_EST = ['Allstar', 'Leyenda', 'Challenger'];
+          let w, h, offsetX, offsetY;
+          if (seccion === 'competitivo' && RANGOS_GRANDES_COMP.some(r => datos.peak.toLowerCase().includes(r.toLowerCase()))) {
+            w = 50; h = 37; offsetX = 25; offsetY = 32;
+          } else if (seccion === 'estadio' && RANGOS_GRANDES_EST.some(r => datos.peak.toLowerCase().includes(r.toLowerCase()))) {
+            w = Math.round(37 * 1.2); h = Math.round(37 * 1.2); offsetX = Math.round(37 * 1.2 / 2); offsetY = Math.round(37 * 1.2 / 2) + 13;
+          } else if (seccion === 'estadio' && RANGOS_MEDIO_EST.some(r => datos.peak.toLowerCase().includes(r.toLowerCase()))) {
+            w = Math.round(37 * 1.1); h = Math.round(37 * 1.1); offsetX = Math.round(37 * 1.1 / 2); offsetY = Math.round(37 * 1.1 / 2) + 14;
+          } else {
+            w = 37; h = 37; offsetX = 18; offsetY = 32;
+          }
+          dibujarImagenPerezosa(src, coordsTxt.peakX - offsetX, coordsTxt.peakY - offsetY, w, h);
+        }
       }
     });
   });
@@ -687,7 +701,8 @@ function init() {
   renderSeccion("cont-maestria", estado.maestria, "maestria");
   renderSeccion("cont-rangoRoleQ", estado.rangoRoleQ, "rangoRoleQ");
   renderSeccion("cont-rangoOpenQ", estado.rangoOpenQ, "rangoOpenQ");
-  
+  renderGridRangos("grid-competitivo", ["tanque", "dps", "apoyo", "filaAbierta"], "competitivo");
+  renderGridRangos("grid-estadio", ["tanque", "dps", "apoyo"], "estadio");
   renderModos();
 }
 
@@ -803,6 +818,80 @@ function filtrarHeroes(id, texto) {
   });
 }
 
+const RANGOS_COMP = ["Bronce", "Plata", "Oro", "Platino", "Diamante", "Master", "Granmaster", "Champion"];
+const RANGOS_ESTADIO = ["Rookie", "Novice", "Contender", "Elite", "Profesional", "Allstar", "Leyenda", "Challenger"];
+
+function renderGridRangos(idCont, roles, seccion) {
+  const cont = document.getElementById(idCont);
+  if (!cont) return;
+
+  let html = `<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; text-align: center; font-size: 0.8rem; align-items: center; justify-items: center;">
+    <span>Rol</span><span>División</span><span>Peak</span>`;
+
+  roles.forEach(rol => {
+    const nombreRol = rol === 'filaAbierta' ? 'Fila Abierta' : rol.charAt(0).toUpperCase() + rol.slice(1);
+    const valorDiv = estado[seccion][rol].division;
+    const valorPeak = estado[seccion][rol].peak;
+    const iconPeak = valorPeak ? getIcon(valorPeak) : '';
+
+    html += `
+    <span>${nombreRol}</span>
+    <input type="text" id="in-div-${seccion}-${rol}" value="${valorDiv}" class="input-valor" style="margin:0; text-align:center; width:100%;">
+    
+    <div class="custom-select-container" style="position:relative; width: 100%; max-width: 70px;">
+      <div class="select-box" onclick="toggleDropPeak('${seccion}-${rol}')" style="display:flex; justify-content:center; align-items:center; height:53px; width:100%; padding:5px; box-sizing:border-box;">
+        <img id="img-peak-${seccion}-${rol}" src="${iconPeak}" style="${iconPeak ? 'display:block;' : 'display:none;'} width:40px; height:40px; object-fit:contain; margin:0;" onerror="this.src='placeHolder.png'">
+      </div>
+      <div id="drop-peak-${seccion}-${rol}" class="select-items" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); width:80px; z-index:99; overflow-x:hidden;">
+        <div class="opcion-heroe" onclick="selectPeak('${seccion}','${rol}','')" style="justify-content:center;">
+          <span>--</span>
+        </div>
+        ${(seccion === 'estadio' ? RANGOS_ESTADIO : RANGOS_COMP).map(r => `
+          <div class="opcion-heroe" onclick="selectPeak('${seccion}','${rol}','${r}')" style="justify-content:center;">
+            <img src="${getIcon(r)}" class="icon-ui" onerror="this.src='placeHolder.png'">
+          </div>`).join('')}
+      </div>
+    </div>
+    `;
+  });
+
+  html += `</div>`;
+  cont.innerHTML = html;
+
+  roles.forEach(rol => {
+    const elDiv = document.getElementById(`in-div-${seccion}-${rol}`);
+    if (elDiv) {
+      elDiv.oninput = (e) => {
+        estado[seccion][rol].division = e.target.value;
+        actualizar();
+      };
+    }
+  });
+}
+
+function toggleDropPeak(id) {
+  const el = document.getElementById(`drop-peak-${id}`);
+  const isVisible = el && el.style.display === 'block';
+  document.querySelectorAll('[id^="drop-peak-"]').forEach(d => d.style.display = 'none');
+  if (el && !isVisible) el.style.display = 'block';
+}
+
+function selectPeak(seccion, rol, rango) {
+  estado[seccion][rol].peak = rango;
+  const img = document.getElementById(`img-peak-${seccion}-${rol}`);
+  if (img) {
+    if (rango === '') {
+      img.style.display = 'none';
+      img.src = '';
+    } else {
+      img.style.display = 'block';
+      img.src = getIcon(rango);
+    }
+  }
+  document.getElementById(`drop-peak-${seccion}-${rol}`).style.display = 'none';
+  actualizar();
+}
+
 const setupInput = (id, field) => {
     const el = document.getElementById(id);
     if (el) {
@@ -829,42 +918,6 @@ setupInput("in-edad", "edad");
   if (el) {
     el.oninput = (e) => {
       estado.horasRoles[i] = e.target.value;
-      actualizar();
-    };
-  }
-});
-
-["tanque", "dps", "apoyo", "filaAbierta"].forEach((rol) => {
-  const elDiv = document.getElementById(`in-div-${rol}`);
-  const elPeak = document.getElementById(`in-peak-${rol}`);
-
-  if (elDiv) {
-    elDiv.oninput = (e) => {
-      estado.competitivo[rol].division = e.target.value;
-      actualizar();
-    };
-  }
-  if (elPeak) {
-    elPeak.oninput = (e) => {
-      estado.competitivo[rol].peak = e.target.value;
-      actualizar();
-    };
-  }
-});
-
-["tanque", "dps", "apoyo"].forEach((rol) => {
-  const elDiv = document.getElementById(`in-div-${rol}-Estadio`);
-  const elPeak = document.getElementById(`in-peak-${rol}-Estadio`);
-
-  if (elDiv) {
-    elDiv.oninput = (e) => {
-      estado.estadio[rol].division = e.target.value;
-      actualizar();
-    };
-  }
-  if (elPeak) {
-    elPeak.oninput = (e) => {
-      estado.estadio[rol].peak = e.target.value;
       actualizar();
     };
   }
