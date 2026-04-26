@@ -550,11 +550,9 @@ function actualizar() {
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
 
-        // División Grande
         ctx.font = "bold 40px Barlow";
         ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY + 5);
 
-        // Icono de Peak
         if (datos.peak && datos.peak !== "") {
           const src = getIcon(datos.peak);
           const RANGOS_GRANDES_COMP = ['Master', 'Granmaster', 'Champion', 'Top500'];
@@ -599,8 +597,6 @@ canvas.addEventListener("mousedown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = Math.round((e.clientX - rect.left) * (canvas.width / rect.width));
   const y = Math.round((e.clientY - rect.top) * (canvas.height / rect.height));
-
-  console.log(`Clic en: x=${x}, y=${y}`);
 
   const isHit = (box) =>
     x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h;
