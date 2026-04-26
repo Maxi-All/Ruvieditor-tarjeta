@@ -587,6 +587,11 @@ const getIcon = (n) => {
 };
 
 canvas.addEventListener("mousedown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = Math.round((e.clientX - rect.left) * (canvas.width / rect.width));
+  const y = Math.round((e.clientY - rect.top) * (canvas.height / rect.height));
+
+
   const isHit = (box) =>
     x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h;
   const menu = document.getElementById("mini-menu");
