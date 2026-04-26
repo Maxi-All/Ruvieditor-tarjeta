@@ -536,6 +536,14 @@ function actualizar() {
     const coordKey = seccion === "competitivo" ? "compTextos" : "estadioTextos";
     Object.keys(estado[seccion]).forEach((rol) => {
       const datos = estado[seccion][rol];
+      const hBox = HITBOXES_EXT[seccion][rol]; 
+      
+      if (datos.x) dibujarEquis(hBox.icono);
+      if (datos.rango) {
+        const rBox = hBox.rangos.find((r) => r.id === datos.rango);
+        if (rBox) dibujarCirculo(rBox);
+      }
+
       const coordsTxt = COORDS[coordKey] ? COORDS[coordKey][rol] : null;
       
       if (coordsTxt) {
@@ -553,6 +561,7 @@ function actualizar() {
           const RANGOS_MEDIO_EST = ['Profesional'];
           const RANGOS_GRANDES_EST = ['Allstar', 'Leyenda', 'Challenger'];
           let w, h, offsetX, offsetY;
+          
           if (seccion === 'competitivo' && RANGOS_GRANDES_COMP.some(r => datos.peak.toLowerCase().includes(r.toLowerCase()))) {
             w = 50; h = 37; offsetX = 25; offsetY = 32;
           } else if (seccion === 'estadio' && RANGOS_GRANDES_EST.some(r => datos.peak.toLowerCase().includes(r.toLowerCase()))) {
@@ -591,6 +600,7 @@ canvas.addEventListener("mousedown", (e) => {
   const x = Math.round((e.clientX - rect.left) * (canvas.width / rect.width));
   const y = Math.round((e.clientY - rect.top) * (canvas.height / rect.height));
 
+  console.log(`Clic en: x=${x}, y=${y}`);
 
   const isHit = (box) =>
     x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h;
