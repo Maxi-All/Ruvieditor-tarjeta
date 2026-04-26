@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1>Editor de Tarjeta de Héroe</h1>
 
     <div class="main-container">
         <aside class="controls">
             <section class="grupo">
-                <h3>Información Básica</h3>
+                <h3>Información Personal</h3>
                 <input type="text" id="in-btag" placeholder="BattleTag">
+                <input type="text" id="in-genero" placeholder="Género">
                 <input type="text" id="in-prons" placeholder="Pronombres">
-                <input type="text" id="in-ano" placeholder="Año Comienzo">
+                <input type="text" id="in-edad" placeholder="Edad">
+                <input type="text" id="in-anyo" placeholder="Año Comienzo">
+                <input type="text" id="in-plataforma" placeholder="PC">
+                <input type="text" id="in-pais" placeholder="la Tierra">
+            </section>
+
+            <section class="grupo">
+                <h3>Tus preferencias</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div><label>Héroe Fav:</label><input type="text" id="in-heroeFav" value="Lifeweaver"
+                            class="input-valor"></div>
+                    <div><label>Héroe Odiado:</label><input type="text" id="in-heroeOdiado" value="Zarya"
+                            class="input-valor"></div>
+                    <div><label>Mapa Fav:</label><input type="text" id="in-mapaFav" value="King's Row"
+                            class="input-valor"></div>
+                    <div><label>Mapa Odiado:</label><input type="text" id="in-mapaOdiado" value="Aatlis"
+                            class="input-valor"></div>
+                    <div><label>Skin Fav:</label><input type="text" id="in-skinFav" value="Lego (bastion)"
+                            class="input-valor"></div>
+                    <div><label>Modo Fav:</label><input type="text" id="in-modoFav" value="Híbrido" class="input-valor">
+                    </div>
+                </div>
             </section>
 
             <section class="grupo">
@@ -24,8 +48,72 @@
                 <div id="lista-modos"></div>
             </section>
 
+            <section class=grupo>
+                <h3>Competitivo (División y Peak)</h3>
+                <div
+                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; text-align: center; font-size: 0.8rem;">
+                    <span>Rol</span><span>División (1-5)</span><span>Peak</span>
+
+                    <span>Tanque</span>
+                    <input type="text" id="in-div-tanque" value="5" class="input-valor">
+                    <input type="text" id="in-peak-tanque" value="" class="input-valor">
+
+                    <span>DPS</span>
+                    <input type="text" id="in-div-dps" value="5" class="input-valor">
+                    <input type="text" id="in-peak-dps" value="" class="input-valor">
+
+                    <span>Apoyo</span>
+                    <input type="text" id="in-div-apoyo" value="5" class="input-valor">
+                    <input type="text" id="in-peak-apoyo" value="" class="input-valor">
+
+                    <span>Fila Abierta</span>
+                    <input type="text" id="in-div-filaAbierta" value="5" class="input-valor">
+                    <input type="text" id="in-peak-filaAbierta" value="" class="input-valor">
+                </div>
+            </section>
+
             <section class="grupo">
-                <h3>+ Horas con Héroes (Top 6)</h3>
+                <h3> Estadio (División y Peak)</h3>
+                <div
+                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; text-align: center; font-size: 0.8rem;">
+                    <span>Rol</span><span>División (1-5)</span><span>Peak</span>
+
+                    <span>Tanque</span>
+                    <input type="text" id="in-div-tanque-Estadio" value="5" class="input-valor">
+                    <input type="text" id="in-peak-tanque-Estadio" value="" class="input-valor">
+
+                    <span>DPS</span>
+                    <input type="text" id="in-div-dps-Estadio" value="5" class="input-valor">
+                    <input type="text" id="in-peak-dps-Estadio" value="" class="input-valor">
+
+                    <span>Apoyo</span>
+                    <input type="text" id="in-div-apoyo-Estadio" value="5" class="input-valor">
+                    <input type="text" id="in-peak-apoyo-Estadio" value="" class="input-valor">
+                </div>
+            </section>
+
+            <section class="grupo">
+                <h3>Horas en roles</h3>
+                <label>Horas en roles</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="text" id="in-horas-0" value="0" class="input-valor" placeholder="Horas Tanque">
+                    <input type="text" id="in-horas-1" value="0" class="input-valor" placeholder="Horas DPS">
+                    <input type="text" id="in-horas-2" value="0" class="input-valor" placeholder="Horas Apoyo">
+                </div>
+            </section>
+
+            <section class="grupo">
+                <h3>SR Heróico Rol Queue</h3>
+                <div id="cont-rangoRoleQ"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>SR Heróico Open Queue</h3>
+                <div id="cont-rangoOpenQ"></div>
+            </section>
+
+            <section class="grupo">
+                <h3>+ Horas con Héroes (Top 10)</h3>
                 <div id="cont-topMas"></div>
             </section>
 
@@ -35,42 +123,45 @@
             </section>
 
             <section class="grupo">
-                <h3>Nivel de Maestría (Top 3)</h3>
+                <h3>Nivel de Progresión (Top 5)</h3>
                 <div id="cont-maestria"></div>
             </section>
+        </aside>
+        <main class="canvas-area">
+            <canvas id="canvas"></canvas>
+        </main>
 
+        <aside class="panel-derecho">
             <section class="grupo">
-                <h3>Rango Heroico (Top 3)</h3>
-                <div id="cont-rango"></div>
+                <button id="btn-descargar" class="btn-primary"
+                    style="width: 100%; margin-bottom: 20px; padding: 15px; font-size: 1.1rem;">
+                    DESCARGAR TARJETA
+                </button>
+
+                <div class="guia-contenedor">
+                    <h3 style="color: #FE0000; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">
+                        Guía de uso</h3>
+                    <ul class="tip-list-derecha">
+                        <li><strong>Habilidades:</strong> Clica en los héroes de la derecha para marcar maestría.</li>
+                        <li><strong>Sin Rango:</strong> Pulsa el icono del rol para marcar la <strong>X</strong>.</li>
+                        <li><strong>Móvil:</strong> Se recomienda modo <strong>horizontal</strong> para editar.</li>
+                        <li><strong>Descarga:</strong> La imagen se genera en PNG de alta resolución.</li>
+                    </ul>
+                </div>
             </section>
         </aside>
 
-        <main class="canvas-area">
-            <canvas id="canvas"></canvas>
-            <div class="canvas-footer">
-                <button id="btn-descargar" class="btn-primary">Descargar Tarjeta</button>
-            <div class="tip-box">
-                <p class="tip-title">Guia de uso</p>
-                <ul class="tip-list">
-                    <li><strong>Habilidades:</strong> Clica en los héroes de la derecha para marcar tu maestría.</li>
-                    <li><strong>Sin Rango:</strong> Pulsa el icono del rol para marcar la <strong>X</strong> si no tienes rango.</li>
-                    <li><strong>Móvil:</strong> Se recomienda el modo <strong>horizontal</strong> para editar con mayor precisión.</li>
-                    <li><strong>Descarga:</strong> La tarjeta se generará en PNG de alta resolución.</li>
-                </ul>
-            </div>
-        </main>
+    </div>
+    <div id="mini-menu" class="floating-menu" style="display: none;">
+        <div class="menu-option" data-nivel="main" style="color: #00ffff;">Main</div>
+        <div class="menu-option" data-nivel="puedojugar" style="color: #00ff00;">Puedo Jugar</div>
+        <div class="menu-option" data-nivel="necesidad" style="color: #ffff00;">Necesidad</div>
+        <div class="menu-option" data-nivel="practicando" style="color: #ff8c00;">Practicando</div>
+        <div class="menu-option" data-nivel="nunca" style="color: #ff0000;">Nunca</div>
+        <div class="menu-option" data-nivel="none" style="color: #ffffff;">Quitar Marca</div>
     </div>
 
-      <div id="mini-menu" class="floating-menu" style="display: none;">
-    <div class="menu-option" data-nivel="main" style="color: #ff00ff;">Main</div>
-    <div class="menu-option" data-nivel="secundario" style="color: #00ffff;">Main Secundario</div>
-    <div class="menu-option" data-nivel="puedo" style="color: #00ff00;">Puedo Jugar</div>
-    <div class="menu-option" data-nivel="necesidad" style="color: #ffff00;">Necesidad</div>
-    <div class="menu-option" data-nivel="practicando" style="color: #ff8c00;">Practicando</div>
-    <div class="menu-option" data-nivel="nunca" style="color: #ff0000;">Nunca</div>
-    <div class="menu-option" data-nivel="none" style="color: #888;">Quitar Marca</div>
-
     <script src="script.js"></script>
-</div>
 </body>
+
 </html>

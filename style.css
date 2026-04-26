@@ -33,16 +33,16 @@ h1 {
 .main-container {
     display: flex;
     gap: 20px;
-    width: 95%;
+    align-items: stretch;
     max-width: 1800px;
     margin: 0 auto;
     justify-content: center;
-    align-items: flex-start;
+    padding: 20px;    
 }
 
 .controls {
-    flex: 0 1 450px;
-    min-width: 350px;
+    flex: 0 0 320px;
+    max-width: 320px;
     background: #1e2124;
     padding: 20px;
     border-radius: 12px;
@@ -153,16 +153,14 @@ input[type="number"] {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-height: 82vh;
+    min-width: 0;
 }
 
 canvas {
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    width: auto;
-    object-fit: contain;
-    border: 2px solid #333;
+    max-width: 100%; 
+    height: auto;   
+    border-radius: 8px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
 }
 
 .canvas-footer {
@@ -243,6 +241,26 @@ canvas {
     padding-top: 5px;
 }
 
+.panel-derecho {
+    flex: 0 0 220px;
+    max-width: 220px;
+}
+
+.tip-list-derecha {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tip-list-derecha li {
+    font-size: 0.85rem;
+    color: #bbb;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    border-left: 2px solid #333;
+    padding-left: 10px;
+}
+
 /* --- MOVIL --- */
 
 @media (max-width: 1024px) {
@@ -256,10 +274,10 @@ canvas {
         align-items: center;
     }
 
-    .controls {
+    .controls, .panel-derecho {
         flex: none;
         width: 100%;
-        max-width: 600px;
+        max-width: 800px;
         height: auto;
         max-height: 60vh;
         margin-bottom: 20px;

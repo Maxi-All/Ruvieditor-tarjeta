@@ -18,8 +18,8 @@ const generarFilaStats = (x, y, esp) => {
       id: i + 1,
       x: x + i * esp,
       y: y,
-      w: 15,
-      h: 19,
+      w: 14,
+      h: 22,
     }));
 };
 
@@ -42,7 +42,7 @@ const COLORES_HEROES = {
   Hazard: "#9B27DF",
   Illari: "#A28D5D",
   "Jetpack Cat": "#2895C2",
-  "JQ": "#2A94BE",
+  JQ: "#2A94BE",
   Junkrat: "#D5C77A",
   Juno: "#C776EA",
   Kiriko: "#B63E46",
@@ -71,14 +71,21 @@ const COLORES_HEROES = {
   Venture: "#ACA43F",
   Widow: "#5A297A",
   Winston: "#4D5264",
-  "WB": "#D2B57E",
+  WB: "#D2B57E",
   Wuyang: "#1D74B7",
   Zarya: "#C34D99",
   Zenyatta: "#37E9EC",
 };
 
 const HEROES = Object.keys(COLORES_HEROES);
-const MODOS = ["TOTAL", "RÁPIDAS", "COMPETITIVAS", "ARCADE", "ESTADIO", "CUSTOM"];
+const MODOS = [
+  "TOTAL",
+  "RÁPIDAS",
+  "COMPETITIVAS",
+  "ARCADE",
+  "ESTADIO",
+  "CUSTOM",
+];
 const COLORES_MODOS = {
   TOTAL: "#FFFFFF",
   RÁPIDAS: "#0078FD",
@@ -96,223 +103,265 @@ const NIVELES_COLORES = {
   nunca: "#ff0000",
 };
 
-const COLORES_STATS = {
-  posicionamiento: "#9C427A",
-  gameSense: "#357B7D",
-  comunicacion: "#467636",
-  mecanicas: "#C8A511", 
-  mapping: "#7E4A2C",
-  movimiento: "#543398",
+const IMAGENES_NVL_SRC = {
+  main: "main.png",
+  puedojugar: "puedojugar.png",
+  necesidad: "necesidad.png",
+  practicando: "practicando.png",
+  nunca: "nunca.png",
 };
 
-//TODO reajustar coords
+const imgPlantilla = new Image();
+const imgVacio = new Image();
+const skillImagesObj = {};
+
+imgPlantilla.src = "Plantilla.png";
+imgVacio.src = "vacio.png";
+
+Object.keys(IMAGENES_NVL_SRC).forEach((nivel) => {
+  const img = new Image();
+  img.src = IMAGENES_NVL_SRC[nivel];
+  skillImagesObj[nivel] = img;
+});
+
+const todasLasImagenesCargadas = Promise.all([
+  new Promise((resolve) => (imgPlantilla.onload = resolve)),
+  new Promise((resolve) => (imgVacio.onload = resolve)),
+  ...Object.values(skillImagesObj).map(
+    (img) => new Promise((resolve) => (img.onload = resolve)),
+  ),
+]);
+
+todasLasImagenesCargadas.then(() => {
+  canvas.width = imgPlantilla.naturalWidth;
+  canvas.height = imgPlantilla.naturalHeight;
+  document.fonts.ready.then(actualizar);
+});
+
+const imgCache = {};
+function dibujarImagenPerezosa(src, x, y, w, h) {
+    if (imgCache[src] && imgCache[src].complete && imgCache[src].naturalWidth > 0) {
+        ctx.drawImage(imgCache[src], x, y, w, h);
+    } else if (!imgCache[src]) {
+        const img = new Image();
+        img.onload = () => actualizar();
+        img.src = src;
+        imgCache[src] = img;
+    }
+}
+
 const GRID_HEROES = [
-  { nombre: "D.Va", x: 1357, y: 400 },
-  { nombre: "Domina", x: 1435, y: 400 },
-  { nombre: "Doomfist", x: 1515, y: 400 },
-  { nombre: "Hazard", x: 1595, y: 400 },
-  { nombre: "JQ", x: 1675, y: 400 },
-  { nombre: "Mauga", x: 1755, y: 400 },
-  { nombre: "Orisa", x: 1835, y: 400 },
-  { nombre: "Ramattra", x: 1915, y: 400 },
-  { nombre: "Reinhardt", x: 1995, y: 400 },
+  { nombre: "D.Va", x: 1422, y: 444 },
+  { nombre: "Domina", x: 1503, y: 444 },
+  { nombre: "Doomfist", x: 1586, y: 444 },
+  { nombre: "Hazard", x: 1668, y: 444 },
+  { nombre: "JQ", x: 1749, y: 444 },
+  { nombre: "Mauga", x: 1831, y: 444 },
+  { nombre: "Orisa", x: 1914, y: 444 },
+  { nombre: "Ramattra", x: 1995, y: 444 },
+  { nombre: "Reinhardt", x: 2076, y: 444 },
 
-  { nombre: "Roadhog", x: 1515, y: 476 },
-  { nombre: "Sigma", x: 1597, y: 476 },
-  { nombre: "Winston", x: 1675, y: 476 },
-  { nombre: "WB", x: 1755, y: 476 },
-  { nombre: "Zarya", x: 1835, y: 476 },
+  { nombre: "Roadhog", x: 1586, y: 533 },
+  { nombre: "Sigma", x: 1668, y: 533 },
+  { nombre: "Winston", x: 1749, y: 533 },
+  { nombre: "WB", x: 1831, y: 533 },
+  { nombre: "Zarya", x: 1914, y: 533 },
 
-  { nombre: "Anran", x: 1357, y: 605 },
-  { nombre: "Ashe", x: 1435, y: 605 },
-  { nombre: "Bastion", x: 1515, y: 605 },
-  { nombre: "Cassidy", x: 1595, y: 605},
-  { nombre: "Echo", x: 1677, y: 605},
-  { nombre: "Emre", x: 1755, y: 605},
-  { nombre: "Freja", x: 1837, y: 605},
-  { nombre: "Genji", x: 1916, y: 605},
-  { nombre: "Hanzo", x: 1995, y: 605},
+  { nombre: "Anran", x: 1422, y: 691 },
+  { nombre: "Ashe", x: 1503, y: 691 },
+  { nombre: "Bastion", x: 1586, y: 691 },
+  { nombre: "Cassidy", x: 1668, y: 691 },
+  { nombre: "Echo", x: 1749, y: 691 },
+  { nombre: "Emre", x: 1831, y: 691 },
+  { nombre: "Freja", x: 1914, y: 691 },
+  { nombre: "Genji", x: 1995, y: 691 },
+  { nombre: "Hanzo", x: 2076, y: 691 },
 
-  { nombre: "Junkrat", x: 1358, y : 690},
-  { nombre: "Mei", x: 1436, y: 689},
-  { nombre: "Pharah", x: 1515, y: 689},
-  { nombre: "Reaper", x: 1595, y: 690},
-  { nombre: "Sojourn", x: 1675, y: 689},
-  { nombre: "Soldier: 76", x: 1755, y: 689},
-  { nombre: "Sombra", x: 1835, y: 689},
-  { nombre: "Symmetra", x: 1915, y: 689},
-  { nombre: "Torbjörn", x: 1995, y:689},
+  { nombre: "Junkrat", x: 1422, y: 779 },
+  { nombre: "Mei", x: 1503, y: 779 },
+  { nombre: "Pharah", x: 1586, y: 779 },
+  { nombre: "Reaper", x: 1668, y: 779 },
+  { nombre: "Sierra", x: 1749, y: 779},
+  { nombre: "Sojourn", x: 1831, y: 779 },
+  { nombre: "Soldier: 76", x: 1914, y: 779 },
+  { nombre: "Sombra", x: 1995, y: 779 },
+  { nombre: "Symmetra", x: 2076, y: 779 },
 
-  { nombre: "Tracer", x: 1557, y: 770},
-  { nombre: "Vendetta", x: 1635, y: 770},
-  { nombre: "Venture", x: 1717, y: 770},
-  { nombre: "Widow", x: 1795, y: 770},
+  { nombre: "Torbjörn", x: 1586, y: 867 },
+  { nombre: "Tracer", x: 1668, y: 867 },
+  { nombre: "Vendetta", x: 1749, y: 867 },
+  { nombre: "Venture", x: 1831, y: 867 },
+  { nombre: "Widow", x: 1914, y: 867   },
 
+  { nombre: "Ana", x: 1422, y: 1030 },
+  { nombre: "Baptiste", x: 1503, y: 1030 },
+  { nombre: "Brigitte", x: 1586, y: 1030 },
+  { nombre: "Illari", x: 1668, y: 1030 },
+  { nombre: "Juno", x: 1749, y: 1030 },
+  { nombre: "Jetpack Cat", x: 1831, y: 1030 },
+  { nombre: "Kiriko", x: 1914, y: 1030 },
+  { nombre: "Lifeweaver", x: 1995, y: 1030 },
+  { nombre: "Lúcio", x: 2076, y: 1030 },
 
-  { nombre: "Ana", x: 1355, y: 899},
-  { nombre: "Baptiste", x: 1435, y: 899},
-  { nombre: "Brigitte", x: 1515, y: 899},
-  { nombre: "Illari", x: 1595, y: 899},
-  { nombre: "Juno", x: 1675, y: 899},
-  { nombre: "Jetpack Cat", x: 1757, y: 899},
-  { nombre: "Kiriko", x: 1838, y: 899},
-  { nombre: "Lifeweaver", x: 1918, y: 899},
-  { nombre: "Lúcio", x: 1997, y: 899},
-
-  { nombre: "Mercy", x: 1512, y: 984},
-  { nombre: "Mizuki", x: 1595, y: 984},
-  { nombre: "Moira", x: 1677, y: 984},
-  { nombre: "Wuyang", x: 1757, y: 984},
-  { nombre: "Zenyatta", x: 1839, y: 984}
+  { nombre: "Mercy", x: 1586, y: 1118 },
+  { nombre: "Mizuki", x: 1668, y: 1118 },
+  { nombre: "Moira", x: 1749, y: 1118 },
+  { nombre: "Wuyang", x: 1831, y: 1118 },
+  { nombre: "Zenyatta", x: 1914, y: 1118 },
 ];
 
 const HITBOXES = {
   semana: [
-    { id: "L", x: 325, y: 525, w: 20, h: 20 },
-    { id: "M", x: 353, y: 525, w: 20, h: 20 },
-    { id: "X", x: 384, y: 525, w: 20, h: 20 },
-    { id: "J", x: 414, y: 525, w: 20, h: 20 },
-    { id: "V", x: 445, y: 525, w: 20, h: 20 },
-    { id: "S", x: 473, y: 525, w: 20, h: 20 },
-    { id: "D", x: 501, y: 525, w: 20, h: 20 },
-  ]
-  
+    { id: "L", x: 290, y: 620, w: 20, h: 20 },
+    { id: "M", x: 320, y: 620, w: 20, h: 20 },
+    { id: "X", x: 350, y: 620, w: 20, h: 20 },
+    { id: "J", x: 380, y: 620, w: 20, h: 20 },
+    { id: "V", x: 410, y: 620, w: 20, h: 20 },
+    { id: "S", x: 439, y: 620, w: 20, h: 20 },
+    { id: "D", x: 467, y: 620, w: 20, h: 20 },
+  ],
 };
 
-//TODO reajustar coords
-const HITBOXES_STATS = {
-  posicionamiento: generarFilaStats(175, 762, 18.5),
-  gameSense: generarFilaStats(175, 788, 18.5),
-  comunicacion: generarFilaStats(175, 814, 18.5),
-  mecanicas: generarFilaStats(175, 841, 18.5),
-  mapping: generarFilaStats(175, 868, 18.5),
-  movimiento: generarFilaStats(175, 895, 18.5),
+const xStats = 404;
+const HITBOXES_STATS = {  
+  posicionamiento: generarFilaStats(xStats, 1178, 18.5),
+  gameSense: generarFilaStats(xStats, 1209, 18.5),
+  comunicacion: generarFilaStats(xStats, 1240, 18.5),
+  mecanicas: generarFilaStats(xStats, 1270, 18.5),
+  mapping: generarFilaStats(xStats, 1301, 18.5),
+  movimiento: generarFilaStats(xStats, 1332, 18.5),
 };
 
-//TODO reajustar coords
+const COLORES_STATS = {
+  posicionamiento: "#9C427A",
+  gameSense: "#357B7D",
+  comunicacion: "#467636",
+  mecanicas: "#C8A511",
+  mapping: "#7E4A2C",
+  movimiento: "#543398",
+};
+
 const HITBOXES_EXT = {
   honor: [
-    { id: 1, x: 100, y: 658, r: 22 },
-    { id: 2, x: 200, y: 658, r: 22 },
-    { id: 3, x: 306, y: 658, r: 22 },
-    { id: 4, x: 409, y: 658, r: 22 },
-    { id: 5, x: 509, y: 658, r: 22 },
+    { id: 1, x: 75, y: 1080, r: 22 },
+    { id: 2, x: 171, y: 1080, r: 22 },
+    { id: 3, x: 272, y: 1080, r: 22 },
+    { id: 4, x: 372.5, y: 1080, r: 22 },
+    { id: 5, x: 465, y: 1080, r: 22 },
   ],
   competitivo: {
     tanque: {
-      icono: { x: 670, y: 300, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [746, 793, 837, 881, 928, 978, 1036.5, 1100, 1162],
-        300,
-      ),
+      icono: { x: 566, y: 300, w: 40, h: 40 },
+      rangos: generarFilaManual([638, 686, 730, 774, 820.25, 870.25, 929.5, 992, 1054.5], 303),
     },
     dps: {
-      icono: { x: 670, y: 370, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [746, 793, 837, 881, 928, 978, 1036.5, 1100, 1162],
-        370,
-      ),
+      icono: { x: 567, y: 370, w: 40, h: 40 },
+      rangos: generarFilaManual([638, 686, 730, 774, 820.25, 870.25, 929.5, 992, 1054.5], 370),
     },
     apoyo: {
-      icono: { x: 672, y: 438, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [746, 793, 837, 881, 928, 978, 1036.5, 1100, 1162],
-        440,
-      ),
+      icono: { x: 567, y: 438, w: 40, h: 40 },
+      rangos: generarFilaManual([638, 686, 730, 774, 820.25, 870.25, 929.5, 992, 1054.5], 440),
     },
     filaAbierta: {
-      icono: { x: 672, y: 505, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [746, 793, 837, 881, 928, 978, 1036.5, 1100, 1162],
-        505,
-      ),
+      icono: { x: 567, y: 505, w: 40, h: 40 },
+      rangos: generarFilaManual([638, 686, 730, 774, 820.25, 870.25, 929.5, 992, 1054.5], 505),
     },
   },
   estadio: {
     tanque: {
-      icono: { x: 670, y: 637, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [739, 794, 850, 905, 968, 1037, 1106, 1177],
-        638,
-      ),
+      icono: { x: 567, y: 649, w: 40, h: 40 },
+      rangos: generarFilaManual([633, 688, 744, 799, 861, 932, 1000, 1070], 651),
     },
     dps: {
-      icono: { x: 670, y: 705, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [739, 794, 850, 905, 968, 1037, 1106, 1177],
-        705,
-      ),
+      icono: { x:567, y: 728, w: 40, h: 40 },
+      rangos: generarFilaManual([633, 688, 744, 799, 861, 932, 1000, 1070], 730),
     },
     apoyo: {
-      icono: { x: 672, y: 772, w: 40, h: 40 },
-      rangos: generarFilaManual(
-        [739, 794, 850, 905, 968, 1037, 1106, 1177],
-        772,
-      ),
+      icono: { x: 567, y: 805, w: 40, h: 40 },
+      rangos: generarFilaManual([633, 688, 744, 799, 861, 932, 1000, 1070], 810),
     },
   },
 };
 
 let estado = {
   btag: "USUARIO#1234",
+  genero: "",
   prons: "They/Them",
-  ano: "2016",
-  topMas: Array(10)
-    .fill()
-    .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  topMenos: Array(5)
-    .fill()
-    .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  maestria: Array(5)
-    .fill()
-    .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  rango: Array(3) 
-    .fill()
-    .map(() => ({ nombre: "- Héroe -", valor: "0" })),
-  // TODO añadir el de openQ
+  edad: "18",
+  anyo: "2016",
+  plataforma: "PC",
+  país: "la Tierra",
+  topMas: Array(10).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
+  topMenos: Array(5).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
+  maestria: Array(5).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
+  rangoRoleQ: Array(3).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
+  rangoOpenQ: Array(3).fill().map(() => ({ nombre: "- Héroe -", valor: "0" })),
   horasModos: Array(6).fill("0"),
-  rol: [],
-  plataforma: [],
-  region: [],
   dias: [],
+
+  heroeFav: "Lifeweaver",
+  heroeOdiado: "Zarya",
+  mapaFav: "King's Row",
+  mapaOdiado: "Aatlis",
+  skinFav: "Lego (Bastion)",
+  modoFav: "Híbrido",
+
   honor: 1,
   competitivo: {
-    tanque: { rango: null, x: false },
-    dps: { rango: null, x: false },
-    apoyo: { rango: null, x: false },
-    filaAbierta: { rango: null, x: false },
+    tanque: { rango: null, x: false, division: "5", peak: "" },
+    dps: { rango: null, x: false, division: "5", peak: "" },
+    apoyo: { rango: null, x: false, division: "5", peak: "" },
+    filaAbierta: { rango: null, x: false, division: "5", peak: "" },
   },
   estadio: {
-    tanque: { rango: null, x: false },
-    dps: { rango: null, x: false },
-    apoyo: { rango: null, x: false },
+    tanque: { rango: null, x: false, division: "5", peak: "" },
+    dps: { rango: null, x: false, division: "5", peak: "" },
+    apoyo: { rango: null, x: false, division: "5", peak: "" },
   },
   habilidades: {},
-  stats: {
-    posicionamiento: 0,
-    gameSense: 0,
-    comunicacion: 0,
-    mecanicas: 0,
-    mapping: 0,
-    movimiento: 0,
-  },
-  // TODO horas en roles
-  // TODO tus preferencias
-  // TODO division y peak de rankeds y estadio
+  stats: { posicionamiento: 0, gameSense: 0, comunicacion: 0, mecanicas: 0, mapping: 0, movimiento: 0 },
+  horasRoles: Array(3).fill("0"),
 };
 
 let heroeSeleccionadoActual = null;
 
-// TODO updatear coords
 const COORDS = {
-  btag: { x: 246, y: 286 },
-  prons: { x: 270, y: 326 },
-  ano: { x: 283, y: 370 },
-  topMas: { xNombre: 675, xValor: 870, y: 910, salto: 44 },
-  topMenos: { xNombre: 987, xValor: 1182, y: 910, salto: 44 },
-  maestria: { xNombre: 60, xValor: 238, y: 1046, salto: 42 },
-  rango: { xNombre: 341, xValor: 519, y: 1045, salto: 42 },
-  modos: { x: 519, y: 779, salto: 32 },
+  btag: { x: 229, y: 329 },
+  genero: { x: 180, y: 372 },
+  prons: { x: 252, y: 417 },
+  edad: {x: 142, y: 456},
+  anyo: { x: 263, y: 505 },
+  plataforma: { x: 252, y: 551 },
+  pais: { x: 126, y: 595 },
+
+  heroeFav: { x: 215, y: 746 },
+  heroeOdiado: { x: 260, y: 793 },
+  mapaFav: { x: 195, y: 837 },
+  mapaOdiado: { x: 249, y: 881 },
+  skinFav: { x: 184, y: 926.5 },
+  modoFav: { x: 192, y: 972 },
+
+  modos: { x: 200, y: 1187, salto: 32 },
+
+  compTextos: {
+    tanque: { divX: 1174, divY: 338, peakX: 1288, peakY: 338 },
+    dps: { divX: 1174, divY: 406, peakX: 1288, peakY: 406 },
+    apoyo: { divX: 1174, divY: 476, peakX: 1288, peakY: 476},
+    filaAbierta: { divX: 1174, divY: 543, peakX: 1288, peakY: 543 },
+  },
+  estadioTextos: {
+    tanque: { divX: 1174, divY: 689, peakX: 1288, peakY: 689},
+    dps: { divX: 1174, divY: 765, peakX: 1288, peakY: 765 },
+    apoyo: { divX: 1174, divY: 844, peakX: 1288, peakY: 844 },
+  },
+  horasRoles: { x: 656, y: 1050, salto: 295 },
+
+  rangoRoleQ: { xNombre: 578, xRango: 755, xValor: 863, y: 1212, salto: 68 },
+  rangoOpenQ: { xNombre: 997, xRango: 1183, xValor: 1280, y: 1212, salto: 68 },
+
+  topMas: { xNombre: 2180, xValor: 2378, y: 326, salto: 46 },
+  topMenos: { xNombre: 2180, xValor: 2378, y: 863, salto: 46 },
+  maestria: { xNombre: 2180, xValor: 2378, y: 1167, salto: 46 },  
 };
 
 function dibujarSubrayado(box) {
@@ -328,13 +377,7 @@ function dibujarCirculo(box) {
   ctx.strokeStyle = "#ff1901";
   ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.arc(
-    box.x + (box.w / 2 || 0),
-    box.y + (box.h / 2 || 0),
-    (box.w / 2 || box.r) + 5,
-    0,
-    Math.PI * 2,
-  );
+  ctx.arc(box.x + (box.w / 2 || 0), box.y + (box.h / 2 || 0), (box.w / 2 || box.r) + 5, 0, Math.PI * 2);
   ctx.stroke();
 }
 
@@ -368,20 +411,20 @@ function dibujarTrapezoide(x, y, w, h, color, lleno) {
   }
 }
 
-// this maybe no longer needed
-function dibujarHexagono(x, y, color) {
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 5;
-  ctx.beginPath();
-  for (let i = 0; i < 6; i++) {
-    const angulo = (Math.PI / 3) * i;
-    const px = x + 35 * Math.cos(angulo);
-    const py = y + 35 * Math.sin(angulo);
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  }
-  ctx.closePath();
-  ctx.stroke();
+function dibujarFiguraHabilidad(x, y, nivel) {
+  if (!nivel || nivel === "none") return;
+
+  const img = skillImagesObj[nivel];
+  
+  if (!img) return;
+
+  const anchoFigura = 75; 
+  const altoFigura = 75;
+
+  const posX = x - anchoFigura / 2;
+  const posY = y - altoFigura / 2;
+
+  ctx.drawImage(img, posX, posY, anchoFigura, altoFigura);
 }
 
 function dibujarLista(data, config) {
@@ -398,21 +441,74 @@ function dibujarLista(data, config) {
   });
 }
 
+function dibujarListaRangos(data, config) {
+  data.forEach((item, i) => {
+    if (item.nombre.startsWith("-")) return;
+    let y = config.y + i * config.salto;
+    
+    ctx.fillStyle = COLORES_HEROES[item.nombre] || "white";
+    ctx.textAlign = "left";
+    ctx.font = "500 24px Barlow";
+    ctx.fillText(item.nombre, config.xNombre, y);
+    
+    const rangoAuto = calcularRango(item.valor);
+    if (rangoAuto !== "- Rango -") {
+        const src = getIcon(rangoAuto);
+        dibujarImagenPerezosa(src, config.xRango - 16, y - 43, 46, 46);
+    }
+
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.fillText(item.valor, config.xValor, y);
+  });
+}
+
+function calcularRango(sr) {
+    const num = parseInt(sr);
+    if (isNaN(num) || num <= 0) return "- Rango -";
+    if (num <= 1499) return "Bronce";
+    if (num <= 1999) return "Plata";
+    if (num <= 2499) return "Oro";
+    if (num <= 2999) return "Platino";
+    if (num <= 3499) return "Diamante";
+    if (num <= 3999) return "Master";
+    if (num <= 4499) return "GranMaster";
+    return "Champion"; 
+}
+
 function actualizar() {
-  ctx.drawImage(plantilla, 0, 0);
+  ctx.drawImage(imgPlantilla, 0, 0);
   ctx.fillStyle = "white";
 
   ctx.textAlign = "left";
   ctx.font = "bold 34px Barlow";
   ctx.fillText(estado.btag.toUpperCase(), COORDS.btag.x, COORDS.btag.y);
   ctx.font = "400 28px Barlow";
+  ctx.fillText(estado.genero, COORDS.genero.x, COORDS.genero.y);
   ctx.fillText(estado.prons, COORDS.prons.x, COORDS.prons.y);
-  ctx.fillText(estado.ano, COORDS.ano.x, COORDS.ano.y);
+  ctx.fillText(estado.edad, COORDS.edad.x, COORDS.edad.y);
+  ctx.fillText(estado.anyo, COORDS.anyo.x, COORDS.anyo.y);
+  ctx.fillText(estado.plataforma, COORDS.plataforma.x, COORDS.plataforma.y);
+  ctx.fillText(estado.país, COORDS.pais.x, COORDS.pais.y);
+  ctx.fillText(estado.heroeFav, COORDS.heroeFav.x, COORDS.heroeFav.y);
+  ctx.fillText(estado.heroeOdiado, COORDS.heroeOdiado.x, COORDS.heroeOdiado.y);
+  ctx.fillText(estado.mapaFav, COORDS.mapaFav.x, COORDS.mapaFav.y);
+  ctx.fillText(estado.mapaOdiado, COORDS.mapaOdiado.x, COORDS.mapaOdiado.y);
+  ctx.fillText(estado.skinFav, COORDS.skinFav.x, COORDS.skinFav.y);
+  ctx.fillText(estado.modoFav, COORDS.modoFav.x, COORDS.modoFav.y);
+
+  ctx.textAlign = "center";
+  estado.horasRoles.forEach((h, i) => {
+    ctx.fillText(h, COORDS.horasRoles.x + (i * COORDS.horasRoles.salto), COORDS.horasRoles.y);
+  });
+  ctx.textAlign = "left";
 
   dibujarLista(estado.topMas, COORDS.topMas);
   dibujarLista(estado.topMenos, COORDS.topMenos);
   dibujarLista(estado.maestria, COORDS.maestria);
-  dibujarLista(estado.rango, COORDS.rango);
+  
+  dibujarListaRangos(estado.rangoRoleQ, COORDS.rangoRoleQ);
+  dibujarListaRangos(estado.rangoOpenQ, COORDS.rangoOpenQ);
 
   ctx.textAlign = "center";
   ctx.font = "400 20px Barlow";
@@ -429,30 +525,29 @@ function actualizar() {
     });
   });
 
-  const regActiva = HITBOXES.regiones.find((r) => r.id === estado.region);
-  if (regActiva) dibujarSubrayado(regActiva);
   HITBOXES.semana.forEach((box) => {
     if (estado.dias.includes(box.id)) dibujarSubrayado(box);
-  });
-
-  [HITBOXES.roles, HITBOXES.plataformas].forEach((grupo) => {
-    grupo.forEach((box) => {
-      const cat = HITBOXES.roles.includes(box) ? "rol" : "plataforma";
-      if (estado[cat].includes(box.id)) dibujarSubrayado(box);
-    });
   });
 
   const hActivo = HITBOXES_EXT.honor.find((h) => h.id === estado.honor);
   if (hActivo) dibujarCirculo(hActivo);
 
   ["competitivo", "estadio"].forEach((seccion) => {
+    const coordKey = seccion === "competitivo" ? "compTextos" : "estadioTextos";
     Object.keys(estado[seccion]).forEach((rol) => {
       const datos = estado[seccion][rol];
       const hBox = HITBOXES_EXT[seccion][rol];
+      
       if (datos.x) dibujarEquis(hBox.icono);
       if (datos.rango) {
         const rBox = hBox.rangos.find((r) => r.id === datos.rango);
         if (rBox) dibujarCirculo(rBox);
+      }
+
+      const coordsTxt = COORDS[coordKey] ? COORDS[coordKey][rol] : null;
+      if (coordsTxt) {
+        ctx.fillText(datos.division || "", coordsTxt.divX, coordsTxt.divY);
+        ctx.fillText(datos.peak || "", coordsTxt.peakX, coordsTxt.peakY);
       }
     });
   });
@@ -460,8 +555,8 @@ function actualizar() {
   Object.keys(estado.habilidades).forEach((nombre) => {
     const h = GRID_HEROES.find((gh) => gh.nombre === nombre);
     if (h) {
-      const color = NIVELES_COLORES[estado.habilidades[nombre]];
-      dibujarHexagono(h.x, h.y, color);
+      const nivelHabilidad = estado.habilidades[nombre];
+      dibujarFiguraHabilidad(h.x, h.y, nivelHabilidad);
     }
   });
 }
@@ -480,6 +575,8 @@ canvas.addEventListener("mousedown", (e) => {
   const x = Math.round((e.clientX - rect.left) * (canvas.width / rect.width));
   const y = Math.round((e.clientY - rect.top) * (canvas.height / rect.height));
 
+  console.log(`Clic en: x=${x}, y=${y}`);
+
   const isHit = (box) =>
     x >= box.x && x <= box.x + box.w && y >= box.y && y <= box.y + box.h;
   const menu = document.getElementById("mini-menu");
@@ -487,38 +584,38 @@ canvas.addEventListener("mousedown", (e) => {
   const heroeEncontrado = GRID_HEROES.find(
     (h) => Math.hypot(x - h.x, y - h.y) < 30,
   );
+  
   if (heroeEncontrado) {
-        heroeSeleccionadoActual = heroeEncontrado.nombre;
+    heroeSeleccionadoActual = heroeEncontrado.nombre;
 
-        menu.style.opacity = "0";
-        menu.style.display = "block";
+    menu.style.opacity = "0";
+    menu.style.display = "block";
 
-        const menuWidth = menu.offsetWidth;
-        const menuHeight = menu.offsetHeight;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+    const menuWidth = menu.offsetWidth;
+    const menuHeight = menu.offsetHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
-        let posX = e.pageX;
-        let posY = e.pageY;
+    let posX = e.pageX;
+    let posY = e.pageY;
 
-        if (e.clientX + menuWidth > windowWidth) {
-            posX = posX - menuWidth;
-        }
-
-        if (e.clientY + menuHeight > windowHeight) {
-            posY = posY - menuHeight;
-        }
-
-        menu.style.left = `${posX}px`;
-        menu.style.top = `${posY}px`;
-        menu.style.opacity = "1";
-        
-        return; 
-    } else {
-        if (!menu.contains(e.target)) {
-            menu.style.display = "none";
-        }
+    if (e.clientX + menuWidth > windowWidth) {
+      posX = posX - menuWidth;
     }
+    if (e.clientY + menuHeight > windowHeight) {
+      posY = posY - menuHeight;
+    }
+
+    menu.style.left = `${posX}px`;
+    menu.style.top = `${posY}px`;
+    menu.style.opacity = "1";
+
+    return;
+  } else {
+    if (!menu.contains(e.target)) {
+      menu.style.display = "none";
+    }
+  }
 
   Object.keys(HITBOXES_STATS).forEach((statKey) => {
     HITBOXES_STATS[statKey].forEach((box) => {
@@ -527,29 +624,19 @@ canvas.addEventListener("mousedown", (e) => {
     });
   });
 
-  HITBOXES.regiones.forEach((b) => {
-    if (isHit(b)) estado.region = b.id;
-  });
   HITBOXES.semana.forEach((b) => {
     if (isHit(b))
       estado.dias = estado.dias.includes(b.id)
         ? estado.dias.filter((d) => d !== b.id)
         : [...estado.dias, b.id];
   });
-  [HITBOXES.roles, HITBOXES.plataformas].forEach((g) => {
-    g.forEach((b) => {
-      if (isHit(b)) {
-        const cat = g === HITBOXES.roles ? "rol" : "plataforma";
-        estado[cat] = estado[cat].includes(b.id)
-          ? estado[cat].filter((i) => i !== b.id)
-          : [...estado[cat], b.id];
-      }
-    });
-  });
+
   HITBOXES_EXT.honor.forEach((b) => {
     if (Math.hypot(x - b.x, y - b.y) < b.r) estado.honor = b.id;
   });
+
   ["competitivo", "estadio"].forEach((sec) => {
+    if(!HITBOXES_EXT[sec]) return;
     Object.keys(HITBOXES_EXT[sec]).forEach((rol) => {
       const hBox = HITBOXES_EXT[sec][rol];
       if (isHit(hBox.icono)) {
@@ -578,14 +665,6 @@ document.getElementById("mini-menu").addEventListener("click", (e) => {
   actualizar();
 });
 
-const plantilla = new Image();
-plantilla.src = "Plantilla.png";
-plantilla.onload = () => {
-  canvas.width = plantilla.naturalWidth;
-  canvas.height = plantilla.naturalHeight;
-  document.fonts.ready.then(actualizar);
-};
-
 function selectHero(tipo, i, h) {
   estado[tipo][i].nombre = h;
   init();
@@ -604,14 +683,18 @@ function init() {
   renderSeccion("cont-topMas", estado.topMas, "topMas");
   renderSeccion("cont-topMenos", estado.topMenos, "topMenos");
   renderSeccion("cont-maestria", estado.maestria, "maestria");
-  renderSeccion("cont-rango", estado.rango, "rango");
+  renderSeccion("cont-rangoRoleQ", estado.rangoRoleQ, "rangoRoleQ");
+  renderSeccion("cont-rangoOpenQ", estado.rangoOpenQ, "rangoOpenQ");
+  
   renderModos();
 }
 
 function renderSeccion(idCont, arr, tipo) {
-    const cont = document.getElementById(idCont);
-    if (!cont) return;
-    cont.innerHTML = arr.map((item, i) => `
+  const cont = document.getElementById(idCont);
+  if (!cont) return;
+  cont.innerHTML = arr
+    .map(
+      (item, i) => `
         <div class="custom-select-container">
             <div style="display: grid; grid-template-columns: 1fr 80px; gap: 5px; margin-bottom: 8px;">
                 <div class="select-box" onclick="toggleDrop('${tipo}-${i}')">
@@ -626,15 +709,19 @@ function renderSeccion(idCont, arr, tipo) {
                            onclick="event.stopPropagation()">
                     
                     <div class="heroes-list">
-                        ${HEROES.map(h => `
+                        ${HEROES.map(
+                          (h) => `
                             <div class="opcion-heroe" onclick="selectHero('${tipo}', ${i}, '${h}')">
                                 <img src="${getIcon(h)}" class="icon-ui">
                                 <span>${h}</span>
-                            </div>`).join('')}
+                            </div>`,
+                        ).join("")}
                     </div>
                 </div>
             </div>
-        </div>`).join('');
+        </div>`,
+    )
+    .join("");
 }
 
 function renderModos() {
@@ -647,30 +734,30 @@ function renderModos() {
 }
 
 function toggleDrop(id) {
-    const el = document.getElementById(`drop-${id}`);
-    const isVisible = el && el.style.display === "block";
-    
-    document.querySelectorAll('.select-items').forEach(d => {
-        d.style.display = "none";
-    });
+  const el = document.getElementById(`drop-${id}`);
+  const isVisible = el && el.style.display === "block";
 
-    if (el && !isVisible) {
-        el.style.display = "block";
+  document.querySelectorAll(".select-items").forEach((d) => {
+    d.style.display = "none";
+  });
 
-        const parentRect = el.parentElement.getBoundingClientRect();
-        const dropdownHeight = 200; 
-        const windowHeight = window.innerHeight;
+  if (el && !isVisible) {
+    el.style.display = "block";
 
-        if (parentRect.bottom + dropdownHeight > windowHeight) {
-            el.style.top = "auto";
-            el.style.bottom = "100%"; 
-            el.style.marginBottom = "5px"; 
-        } else {
-            el.style.top = "100%"; 
-            el.style.bottom = "auto";
-            el.style.marginBottom = "0";
-        }
+    const parentRect = el.parentElement.getBoundingClientRect();
+    const dropdownHeight = 200;
+    const windowHeight = window.innerHeight;
+
+    if (parentRect.bottom + dropdownHeight > windowHeight) {
+      el.style.top = "auto";
+      el.style.bottom = "100%";
+      el.style.marginBottom = "5px";
+    } else {
+      el.style.top = "100%";
+      el.style.bottom = "auto";
+      el.style.marginBottom = "0";
     }
+  }
 }
 
 document.getElementById("in-btag").oninput = (e) => {
@@ -681,8 +768,8 @@ document.getElementById("in-prons").oninput = (e) => {
   estado.prons = e.target.value;
   actualizar();
 };
-document.getElementById("in-ano").oninput = (e) => {
-  estado.ano = e.target.value;
+document.getElementById("in-anyo").oninput = (e) => {
+  estado.anyo = e.target.value;
   actualizar();
 };
 
@@ -700,18 +787,85 @@ document.getElementById("btn-descargar").onclick = function () {
 };
 
 function filtrarHeroes(id, texto) {
-    const lista = document.querySelector(`#drop-${id} .heroes-list`);
-    const opciones = lista.querySelectorAll('.opcion-heroe');
-    const filtro = texto.toLowerCase();
+  const lista = document.querySelector(`#drop-${id} .heroes-list`);
+  const opciones = lista.querySelectorAll(".opcion-heroe");
+  const filtro = texto.toLowerCase();
 
-    opciones.forEach(opcion => {
-        const nombreHeroe = opcion.querySelector('span').innerText.toLowerCase();
-        if (nombreHeroe.includes(filtro)) {
-            opcion.style.display = "flex";
-        } else {
-            opcion.style.display = "none";
-        }
-    });
+  opciones.forEach((opcion) => {
+    const nombreHeroe = opcion.querySelector("span").innerText.toLowerCase();
+    if (nombreHeroe.includes(filtro)) {
+      opcion.style.display = "flex";
+    } else {
+      opcion.style.display = "none";
+    }
+  });
 }
+
+const setupInput = (id, field) => {
+    const el = document.getElementById(id);
+    if (el) {
+        el.oninput = (e) => { 
+            estado[field] = e.target.value; 
+            actualizar(); 
+        };
+    }
+};
+
+setupInput("in-plataforma", "plataforma");
+setupInput("in-pais", "país");
+setupInput("in-heroeFav", "heroeFav");
+setupInput("in-heroeOdiado", "heroeOdiado");
+setupInput("in-mapaFav", "mapaFav");
+setupInput("in-mapaOdiado", "mapaOdiado");
+setupInput("in-skinFav", "skinFav");
+setupInput("in-modoFav", "modoFav");
+setupInput("in-genero", "genero");
+setupInput("in-edad", "edad");
+
+[0, 1, 2].forEach((i) => {
+  const el = document.getElementById(`in-horas-${i}`);
+  if (el) {
+    el.oninput = (e) => {
+      estado.horasRoles[i] = e.target.value;
+      actualizar();
+    };
+  }
+});
+
+["tanque", "dps", "apoyo", "filaAbierta"].forEach((rol) => {
+  const elDiv = document.getElementById(`in-div-${rol}`);
+  const elPeak = document.getElementById(`in-peak-${rol}`);
+
+  if (elDiv) {
+    elDiv.oninput = (e) => {
+      estado.competitivo[rol].division = e.target.value;
+      actualizar();
+    };
+  }
+  if (elPeak) {
+    elPeak.oninput = (e) => {
+      estado.competitivo[rol].peak = e.target.value;
+      actualizar();
+    };
+  }
+});
+
+["tanque", "dps", "apoyo"].forEach((rol) => {
+  const elDiv = document.getElementById(`in-div-${rol}-Estadio`);
+  const elPeak = document.getElementById(`in-peak-${rol}-Estadio`);
+
+  if (elDiv) {
+    elDiv.oninput = (e) => {
+      estado.estadio[rol].division = e.target.value;
+      actualizar();
+    };
+  }
+  if (elPeak) {
+    elPeak.oninput = (e) => {
+      estado.estadio[rol].peak = e.target.value;
+      actualizar();
+    };
+  }
+});
 
 init();
