@@ -56,7 +56,7 @@ const COLORES_HEROES = {
   Orisa: "#91AE19",
   Pharah: "#2E7DAE",
   Ramattra: "#7A549B",
-  Reaper: "#232325",
+  Reaper: "#444446",
   Reinhardt: "#9195AB",
   Roadhog: "#D68412",
   Sierra: "#CF4567",
@@ -151,15 +151,15 @@ function dibujarImagenPerezosa(src, x, y, w, h) {
 }
 
 const GRID_HEROES = [
-  { nombre: "D.Va", x: 1422, y: 444 },
-  { nombre: "Domina", x: 1503, y: 444 },
-  { nombre: "Doomfist", x: 1586, y: 444 },
-  { nombre: "Hazard", x: 1668, y: 444 },
-  { nombre: "JQ", x: 1749, y: 444 },
-  { nombre: "Mauga", x: 1831, y: 444 },
-  { nombre: "Orisa", x: 1914, y: 444 },
-  { nombre: "Ramattra", x: 1995, y: 444 },
-  { nombre: "Reinhardt", x: 2076, y: 444 },
+  { nombre: "D.Va", x: 1422, y: 444.5 },
+  { nombre: "Domina", x: 1503.5, y: 444.5 },
+  { nombre: "Doomfist", x: 1587, y: 444.25 },
+  { nombre: "Hazard", x: 1668, y: 444.25 },
+  { nombre: "JQ", x: 1750, y: 444.5 },
+  { nombre: "Mauga", x: 1832, y: 444 },
+  { nombre: "Orisa", x: 1914.5, y: 444 },
+  { nombre: "Ramattra", x: 1995.5, y: 444 },
+  { nombre: "Reinhardt", x: 2076.25, y: 444 },
 
   { nombre: "Roadhog", x: 1586, y: 533 },
   { nombre: "Sigma", x: 1668, y: 533 },
@@ -329,7 +329,7 @@ const COORDS = {
   btag: { x: 229, y: 329 },
   genero: { x: 180, y: 372 },
   prons: { x: 252, y: 417 },
-  edad: {x: 142, y: 456},
+  edad: {x: 142, y: 461},
   anyo: { x: 263, y: 505 },
   plataforma: { x: 252, y: 551 },
   pais: { x: 126, y: 595 },
@@ -341,7 +341,7 @@ const COORDS = {
   skinFav: { x: 184, y: 926.5 },
   modoFav: { x: 192, y: 972 },
 
-  modos: { x: 200, y: 1187, salto: 32 },
+  modos: { x: 200, y: 1185, salto: 33 },
 
   compTextos: {
     tanque: { divX: 1174, divY: 333, peakX: 1288, peakY: 333 },
@@ -448,7 +448,7 @@ function dibujarListaRangos(data, config) {
     
     ctx.fillStyle = COLORES_HEROES[item.nombre] || "white";
     ctx.textAlign = "left";
-    ctx.font = "Bold 24px Barlow";
+    ctx.font = "Bold   24px Barlow";
     ctx.fillText(item.nombre, config.xNombre, y);
     
     const rangoAuto = calcularRango(item.valor);
