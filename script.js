@@ -433,7 +433,7 @@ function dibujarLista(data, config) {
     let y = config.y + i * config.salto;
     ctx.fillStyle = COLORES_HEROES[item.nombre] || "white";
     ctx.textAlign = "left";
-    ctx.font = "500 24px Barlow";
+    ctx.font = "Bold 24px Barlow";
     ctx.fillText(item.nombre, config.xNombre, y);
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
@@ -448,7 +448,7 @@ function dibujarListaRangos(data, config) {
     
     ctx.fillStyle = COLORES_HEROES[item.nombre] || "white";
     ctx.textAlign = "left";
-    ctx.font = "500 24px Barlow";
+    ctx.font = "Bold 24px Barlow";
     ctx.fillText(item.nombre, config.xNombre, y);
     
     const rangoAuto = calcularRango(item.valor);
