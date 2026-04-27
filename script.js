@@ -334,7 +334,7 @@ const COORDS = {
   plataforma: { x: 252, y: 551 },
   pais: { x: 126, y: 595 },
 
-  heroeFav: { x: 215, y: 746 },
+  heroeFav: { x: 215, y: 748 },
   heroeOdiado: { x: 260, y: 793 },
   mapaFav: { x: 195, y: 837 },
   mapaOdiado: { x: 249, y: 881 },
@@ -357,7 +357,7 @@ const COORDS = {
   horasRoles: { x: 656, y: 1050, salto: 295 },
 
   rangoRoleQ: { xNombre: 578, xRango: 755, xValor: 863, y: 1212, salto: 68 },
-  rangoOpenQ: { xNombre: 997, xRango: 1178, xValor: 1280, y: 1212, salto: 68 },
+  rangoOpenQ: { xNombre: 998, xRango: 1178, xValor: 1280, y: 1212, salto: 68 },
 
   topMas: { xNombre: 2180, xValor: 2378, y: 326, salto: 46 },
   topMenos: { xNombre: 2180, xValor: 2378, y: 863, salto: 46 },
@@ -483,7 +483,7 @@ function actualizar() {
   ctx.textAlign = "left";
   ctx.font = "bold 34px Barlow";
   ctx.fillText(estado.btag.toUpperCase(), COORDS.btag.x, COORDS.btag.y);
-  ctx.font = "400 28px Barlow";
+  ctx.font = "bold 28px Barlow";
   ctx.fillText(estado.genero, COORDS.genero.x, COORDS.genero.y);
   ctx.fillText(estado.prons, COORDS.prons.x, COORDS.prons.y);
   ctx.fillText(estado.edad, COORDS.edad.x, COORDS.edad.y);
