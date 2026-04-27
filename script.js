@@ -511,7 +511,7 @@ function actualizar() {
   dibujarListaRangos(estado.rangoOpenQ, COORDS.rangoOpenQ);
 
   ctx.textAlign = "center";
-  ctx.font = "400 20px Barlow";
+  //ctx.font = "400 20px Barlow";
   estado.horasModos.forEach((h, i) => {
     ctx.fillStyle = COLORES_MODOS[MODOS[i]] || "white";
     ctx.fillText(h, COORDS.modos.x, COORDS.modos.y + i * COORDS.modos.salto);
